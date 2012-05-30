@@ -2,35 +2,49 @@ import sys, os, subprocess, signal
 
 programs = [
     'glib_hash_table',
-    'stl_unordered_map',
-    'boost_unordered_map',
-    'google_sparse_hash_map',
     'google_dense_hash_map',
-    'qt_qhash',
-    'python_dict',
-    'ruby_hash',
+    'stx_bplus_tree',
+    'bplus_tree2',
+    'bplus_tree_generic',
+    # 'stl_unordered_map',
+    # 'stl_map',
+    # 'boost_unordered_map',
+    # 'google_sparse_hash_map',
+    # 'qt_qhash',
+    # 'python_dict',
+    # 'ruby_hash',
+    # 'glib_hash_table_lite',
+    # 'bplus_tree_16',
+    # 'bplus_tree_64',
+    # 'bplus_tree_128',
+    # 'bplus_tree_256',
+    # 'bplus_tree_dicho_16',
+    # 'bplus_tree_dicho_32',
+    # 'bplus_tree_dicho_64',
+    # 'bplus_tree_dicho_128',
+    # 'bplus_tree_dicho_256',
+    # 'bplus_tree2_linear',
+    # 'bplus_tree_generic_linear',
 ]
 
-minkeys  =  2*1000*1000
-maxkeys  = 40*1000*1000
-interval =  2*1000*1000
-best_out_of = 2
+minkeys  =  64*1024
+maxkeys  =   1*1024*1024
+interval =  2
+best_out_of = 3
+
+#minkeys  = 16000
+#maxkeys  = 512*1000
+#interval = 2
+#best_out_of = 3
 
 # for the final run, use this:
-#minkeys  =  2*1000*1000
-#maxkeys  = 40*1000*1000
-#interval =  2*1000*1000
-#best_out_of = 3
-# and use nice/ionice
-# and shut down to the console
-# and swapoff any swap files/partitions
 
 outfile = open('output', 'w')
 
 if len(sys.argv) > 1:
     benchtypes = sys.argv[1:]
 else:
-    benchtypes = ('sequential', 'random', 'delete', 'sequentialstring', 'randomstring', 'deletestring')
+    benchtypes = ('random-usage', 'insert', 'delete', 'lookup', 'random-insert', 'random-delete', 'random-lookup')
 
 for benchtype in benchtypes:
     nkeys = minkeys
@@ -66,4 +80,4 @@ for benchtype in benchtypes:
                 print >> outfile, fastest_attempt_data
                 print fastest_attempt_data
 
-        nkeys += interval
+        nkeys *= interval

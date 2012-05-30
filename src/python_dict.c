@@ -8,12 +8,19 @@ typedef PyObject * hash_t;
         PyObject * py_int_key = PyInt_FromLong(key); /* leak */ \
         PyDict_SetItem(hash, py_int_key, py_int_value); \
     } while(0)
+#define LOOKUP_INT_FROM_HASH(key) do { \
+        PyObject * py_int_key = PyInt_FromLong(key); /* leak */ \
+        (void) PyDict_GetItem(hash, py_int_key); \
+    } while(0)
 #define DELETE_INT_FROM_HASH(key) do { \
         PyObject * py_int_key = PyInt_FromLong(key); /* leak */ \
         PyDict_DelItem(hash, py_int_key); \
     } while(0)
 #define INSERT_STR_INTO_HASH(key, value) do { \
         PyDict_SetItemString(hash, key, py_int_value); \
+    } while(0)
+#define LOOKUP_STR_FROM_HASH(key) do { \
+        (void) PyDict_GetItemString(hash, key); \
     } while(0)
 #define DELETE_STR_FROM_HASH(key) do { \
         PyDict_DelItemString(hash, key); \

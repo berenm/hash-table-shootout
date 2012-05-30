@@ -1,120 +1,273 @@
 <html>
     <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <!--[if IE]><script language="javascript" type="text/javascript" src="http://flot.googlecode.com/svn/trunk/excanvas.min.js"></script><![endif]-->
         <script language="javascript" type="text/javascript" src="http://flot.googlecode.com/svn/trunk/jquery.js"></script>
         <script language="javascript" type="text/javascript" src="http://flot.googlecode.com/svn/trunk/jquery.flot.js"></script>
+        <script type='text/javascript'>
+            series_settings = {
+                lines: { show: true },
+                points: { show: true },
+                lineWidth: 0.5
+            };
+
+            grid_settings = { tickColor: '#ddd' };
+
+            xaxis_settings = {
+                tickSize: 32*1024,
+                tickFormatter: function(num, obj) { 
+                    if(obj.previous == undefined || obj.previous * 2 <= num) {
+                        obj.previous = num;
+
+                        if(num >= 1024*1024)
+                            return parseInt(num/1024/1024) + 'M';
+                        else if(num >= 1024)
+                            return parseInt(num/1024) + 'k';
+                        else
+                            return num;
+                    }
+                    return '';
+                },
+                transform: function (v) { return Math.log(v); },
+                inverseTransform: function (v) { return Math.exp(v); }
+            };
+
+            yaxis_runtime_settings = {
+                // tickSize: 0.005,
+                tickFormatter: function(num, obj) { return parseInt(num*100)/100 + ' sec.'; }
+            };
+
+            yaxis_runtime_per_settings = {
+                tickSize: 0.00000005,
+                tickFormatter: function(num, obj) { return num*1000000000 + ' nsec.'; }
+            };
+
+            yaxis_memory_settings = {
+                // tickSize: 1.0,
+                tickFormatter: function(num, obj) { return parseInt(num/1024/1024) + 'MiB'; }
+            };
+
+            yaxis_ratio_settings = {
+                tickSize: 1.0,
+                tickFormatter: function(num, obj) { return parseInt(num*100)/100 + 'x'; }
+            };
+
+            legend_settings = {
+                position: 'nw',
+                backgroundOpacity: 0
+            };
+
+            runtime_settings = {
+                series: series_settings,
+                grid: grid_settings,
+                xaxis: xaxis_settings,
+                yaxis: yaxis_runtime_settings,
+                legend: legend_settings
+            };
+
+            runtime_per_settings = {
+                series: series_settings,
+                grid: grid_settings,
+                xaxis: xaxis_settings,
+                yaxis: yaxis_runtime_per_settings,
+                legend: legend_settings
+            };
+
+            ratio_settings = {
+                series: series_settings,
+                grid: grid_settings,
+                xaxis: xaxis_settings,
+                yaxis: yaxis_ratio_settings,
+                legend: legend_settings
+            };
+
+            memory_settings = {
+                series: series_settings,
+                grid: grid_settings,
+                xaxis: xaxis_settings,
+                yaxis: yaxis_memory_settings,
+                legend: legend_settings
+            };
+
+            __CHART_DATA_GOES_HERE__
+
+            $(function () {
+                // $.plot($("#random-usage-ratio"),  chart_data['random-usage-ratio'],  ratio_settings);
+                // $.plot($("#insert-ratio"),        chart_data['insert-ratio'],        ratio_settings);
+                // $.plot($("#delete-ratio"),        chart_data['delete-ratio'],        ratio_settings);
+                // $.plot($("#lookup-ratio"),        chart_data['lookup-ratio'],        ratio_settings);
+                // $.plot($("#random-insert-ratio"), chart_data['random-insert-ratio'], ratio_settings);
+                // $.plot($("#random-delete-ratio"), chart_data['random-delete-ratio'], ratio_settings);
+                // $.plot($("#random-lookup-ratio"), chart_data['random-lookup-ratio'], ratio_settings);
+
+                $.plot($("#random-usage-runtime"),  chart_data['random-usage-runtime'],  runtime_settings);
+                $.plot($("#insert-runtime"),        chart_data['insert-runtime'],        runtime_settings);
+                $.plot($("#delete-runtime"),        chart_data['delete-runtime'],        runtime_settings);
+                $.plot($("#lookup-runtime"),        chart_data['lookup-runtime'],        runtime_settings);
+                $.plot($("#random-insert-runtime"), chart_data['random-insert-runtime'], runtime_settings);
+                $.plot($("#random-delete-runtime"), chart_data['random-delete-runtime'], runtime_settings);
+                $.plot($("#random-lookup-runtime"), chart_data['random-lookup-runtime'], runtime_settings);
+
+                $.plot($("#random-usage-runtime-per"),  chart_data['random-usage-runtime-per'],  runtime_per_settings);
+                $.plot($("#insert-runtime-per"),        chart_data['insert-runtime-per'],        runtime_per_settings);
+                $.plot($("#delete-runtime-per"),        chart_data['delete-runtime-per'],        runtime_per_settings);
+                $.plot($("#lookup-runtime-per"),        chart_data['lookup-runtime-per'],        runtime_per_settings);
+                $.plot($("#random-insert-runtime-per"), chart_data['random-insert-runtime-per'], runtime_per_settings);
+                $.plot($("#random-delete-runtime-per"), chart_data['random-delete-runtime-per'], runtime_per_settings);
+                $.plot($("#random-lookup-runtime-per"), chart_data['random-lookup-runtime-per'], runtime_per_settings);
+
+                $.plot($("#random-usage-memory"),  chart_data['random-usage-memory'],  memory_settings);
+                $.plot($("#insert-memory"),        chart_data['insert-memory'],        memory_settings);
+                $.plot($("#random-insert-memory"), chart_data['random-insert-memory'], memory_settings);
+            });
+        </script>
+
+        <style>
+            body, * { font-family: sans-serif; }
+            div.chart {
+                float: left;
+            }
+            div.chart div.chart {
+                width: 1000px;
+                height: 400px;
+                float: none;
+            }
+            div.xaxis-title {
+                width: 700px;
+                text-align: center;
+                font-style: italic;
+                font-size: small;
+                color: #666;
+            }
+        </style>
     </head>
     <body>
 
-<script>
-    series_settings = {
-        lines: { show: true },
-        points: { show: true }
-    };
+    <div class='chart'>
+        <h4>Random usage: time</h4>
+        <div class="chart" id="random-usage-runtime"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Random usage: time (per k)</h4>
+        <div class="chart" id="random-usage-runtime-per"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+<!--     <div class='chart'>
+        <h4>Random usage: ratio</h4>
+        <div class="chart" id="random-usage-ratio"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div> -->
+    <div class='chart'>
+        <h4>Random usage: memory</h4>
+        <div class="chart" id="random-usage-memory"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div style='clear: both;'/>
 
-    grid_settings = { tickColor: '#ddd' };
+    <div class='chart'>
+        <h4>Inserts: time</h4>
+        <div class="chart" id="insert-runtime"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Inserts: time (per k)</h4>
+        <div class="chart" id="insert-runtime-per"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+<!--     <div class='chart'>
+        <h4>Inserts: ratio</h4>
+        <div class="chart" id="insert-ratio"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div> -->
+    <div class='chart'>
+        <h4>Deletes: time</h4>
+        <div class="chart" id="delete-runtime"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Deletes: time (per k)</h4>
+        <div class="chart" id="delete-runtime-per"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+<!--     <div class='chart'>
+        <h4>Deletes: ratio</h4>
+        <div class="chart" id="delete-ratio"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div> -->
+    <div class='chart'>
+        <h4>Lookups: time</h4>
+        <div class="chart" id="lookup-runtime"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Lookups: time (per k)</h4>
+        <div class="chart" id="lookup-runtime-per"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+<!--     <div class='chart'>
+        <h4>Lookups: ratio</h4>
+        <div class="chart" id="lookup-ratio"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div> -->
+    <div class='chart'>
+        <h4>Inserts: memory</h4>
+        <div class="chart" id="insert-memory"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div style='clear: both;'/>
 
-    xaxis_settings = {
-        tickSize: 5000000,
-        tickFormatter: function(num, obj) { return parseInt(num/1000000) + 'M'; }
-    };
-
-    yaxis_runtime_settings = {
-        tickSize: 10,
-        tickFormatter: function(num, obj) { return num + ' sec.'; }
-    };
-
-    yaxis_memory_settings = {
-        tickSize: 200*1024*1024,
-        tickFormatter: function(num, obj) { return parseInt(num/1024/1024) + 'MiB'; }
-    };
-
-    legend_settings = {
-        position: 'nw',
-        backgroundOpacity: 0
-    };
-
-    runtime_settings = {
-        series: series_settings,
-        grid: grid_settings,
-        xaxis: xaxis_settings,
-        yaxis: yaxis_runtime_settings,
-        legend: legend_settings
-    };
-
-    memory_settings = {
-        series: series_settings,
-        grid: grid_settings,
-        xaxis: xaxis_settings,
-        yaxis: yaxis_memory_settings,
-        legend: legend_settings
-    };
-
-    __CHART_DATA_GOES_HERE__
-
-    $(function () {
-        $.plot($("#sequential-runtime"), chart_data['sequential-runtime'], runtime_settings);
-        $.plot($("#random-runtime"),     chart_data['random-runtime'],     runtime_settings);
-        $.plot($("#delete-runtime"),     chart_data['delete-runtime'],     runtime_settings);
-        $.plot($("#sequential-memory"),  chart_data['sequential-memory'],  memory_settings);
-        $.plot($("#sequentialstring-runtime"), chart_data['sequentialstring-runtime'], runtime_settings);
-        $.plot($("#randomstring-runtime"),     chart_data['randomstring-runtime'],     runtime_settings);
-        $.plot($("#deletestring-runtime"),     chart_data['deletestring-runtime'],     runtime_settings);
-        $.plot($("#sequentialstring-memory"),  chart_data['sequentialstring-memory'],  memory_settings);
-    });
-</script>
-
-<style>
-    body, * { font-family: sans-serif; }
-    div.chart {
-        width: 700px;
-        height: 230px;
-    }
-    div.xaxis-title {
-        width: 700px;
-        text-align: center;
-        font-style: italic;
-        font-size: small;
-        color: #666;
-    }
-</style>
-
-
-<h3>Sequential Inserts: Execution Time (integers)</h3>
-<div class="chart" id="sequential-runtime"></div>
-<div class="xaxis-title">number of entries in hash table</div>
-
-<h3>Sequential Inserts: Execution Time (strings)</h3>
-<div class="chart" id="sequentialstring-runtime"></div>
-<div class="xaxis-title">number of entries in hash table</div>
-
-
-<h3>Random Inserts: Execution Time (integers)</h3>
-<div class="chart" id="random-runtime"></div>
-<div class="xaxis-title">number of entries in hash table</div>
-
-<h3>Random Inserts: Execution Time (strings)</h3>
-<div class="chart" id="randomstring-runtime"></div>
-<div class="xaxis-title">number of entries in hash table</div>
-
-
-<h3>Deletes: Execution Time (integers)</h3>
-<div class="chart" id="delete-runtime"></div>
-<div class="xaxis-title">number of entries in hash table</div>
-
-<h3>Deletes: Execution Time (strings)</h3>
-<div class="chart" id="deletestring-runtime"></div>
-<div class="xaxis-title">number of entries in hash table</div>
-
-
-<h3>Memory Usage (integers)</h3>
-<div class="chart" id="sequential-memory"></div>
-<div class="xaxis-title">number of entries in hash table</div>
-
-<h3>Memory Usage (strings)</h3>
-<div class="chart" id="sequentialstring-memory"></div>
-<div class="xaxis-title">number of entries in hash table</div>
-
+    <div class='chart'>
+        <h4>Random inserts: time</h4>
+        <div class="chart" id="random-insert-runtime"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Random inserts: time (per k)</h4>
+        <div class="chart" id="random-insert-runtime-per"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+<!--     <div class='chart'>
+        <h4>Random inserts: ratio</h4>
+        <div class="chart" id="random-insert-ratio"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div> -->
+    <div class='chart'>
+        <h4>Random deletes: time</h4>
+        <div class="chart" id="random-delete-runtime"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Random deletes: time (per k)</h4>
+        <div class="chart" id="random-delete-runtime-per"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+<!--     <div class='chart'>
+        <h4>Random deletes: ratio</h4>
+        <div class="chart" id="random-delete-ratio"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div> -->
+    <div class='chart'>
+        <h4>Random lookups: time</h4>
+        <div class="chart" id="random-lookup-runtime"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Random lookups: time (per k)</h4>
+        <div class="chart" id="random-lookup-runtime-per"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+<!--     <div class='chart'>
+        <h4>Random lookups: ratio</h4>
+        <div class="chart" id="random-lookup-ratio"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div> -->
+    <div class='chart'>
+        <h4>Random inserts: memory</h4>
+        <div class="chart" id="random-insert-memory"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div style='clear: both;'/>
 
 </body>
 </html>

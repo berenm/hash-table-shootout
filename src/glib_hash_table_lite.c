@@ -1,4 +1,4 @@
-#include <glib.h>
+#include "glib_hash_table_lite.h"
 #define SETUP GHashTable * hash     = g_hash_table_new(g_direct_hash, g_direct_equal); \
               GHashTable * str_hash = g_hash_table_new(g_str_hash,    g_str_equal);
 #define INSERT_INT_INTO_HASH(key, value) g_hash_table_insert(hash, GINT_TO_POINTER(key), &value)
