@@ -1,3 +1,6 @@
-[submodule "bplus_tree"]
-	path = bplus_tree
+[submodule "bplus-tree-v1"]
+	path = bplus-tree-v1
+	url = git://github.com/berenm/bplus-tree.git
+[submodule "bplus-tree-v2"]
+	path = bplus-tree-v2
 	url = git://github.com/berenm/bplus-tree.git

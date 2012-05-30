@@ -14,6 +14,7 @@
 static uint64_t get_nanoseconds()
 {
     struct timespec timestamp;
+
     clock_gettime(CLOCK_REALTIME, &timestamp);
 
     uint64_t const seconds_since_midnight     = (uint64_t) (timestamp.tv_sec % (3600 * 24));
@@ -54,14 +55,12 @@ static array_t* alloc_arrays(size_t const array_count, size_t const elements_cou
     array_t* arrays = calloc(array_count, sizeof(array_t));
     printf("allocating %d arrays\n", array_count);
     for (uint64_t i = 0; i < array_count; ++i)
-    {
         fill_array(arrays + i, elements_count, generator_m);
-    }
+
     fprintf(stdout, "array contents: [%d] ", arrays[0].size);
     for (uint64_t k = 0; k < ARRAY_SIZE && k < elements_count; ++k)
-    {
         fprintf(stdout, "%d ", arrays[0].values[k]);
-    }
+
     fprintf(stdout, "\n");
 
     return arrays;
@@ -97,10 +96,8 @@ static size_t linsearch(size_t const array_size, array_t const* array, uint64_t 
     uint64_t const* const end   = begin + array->size;
     uint64_t const*       item  = begin;
     while (item < end)
-    {
         if (*(item++) >= value)
             break;
-    }
 
     return item - begin;
 }
@@ -161,21 +158,18 @@ static void search_arrays(array_t* arrays, size_t const array_count, size_t cons
 {
     uint64_t const before = get_nanoseconds();
     for (uint64_t j = 0; j < retry_count; ++j)
-    {
         for (uint64_t i = 0; i < array_count; ++i)
-        {
             search(ARRAY_SIZE, arrays + i, values[j]);
-        }
-    }
+
     uint64_t const after       = get_nanoseconds();
     double         nanoseconds = after - before;
 
     size_t index = search(ARRAY_SIZE, arrays, values[0]);
     fprintf(stdout, "%s for value: %d (found %zu), "
-            "%zu arrays "
-            "%zu retries, "
-            "total: %lfns, "
-            "each: %lfns\n",
+                    "%zu arrays "
+                    "%zu retries, "
+                    "total: %lfns, "
+                    "each: %lfns\n",
             search_name,
             values[0],
             index,
@@ -242,26 +236,24 @@ int main(int argc, char const* argv[])
 
     uint64_t* values = malloc(retry_count * sizeof(uint64_t));
     for (uint64_t j = 0; j < retry_count; ++j)
-    {
         values[j] = value_generator(j);
-    }
 
     array_t* arrays = alloc_arrays(array_count, size, generator);
 
-if(argc < 5 || !strcmp(argv[4], "forsearch"))
-    search_arrays(arrays, array_count, retry_count, values, &forsearch, "forsearch");
+    if ((argc < 5) || !strcmp(argv[4], "forsearch"))
+        search_arrays(arrays, array_count, retry_count, values, &forsearch, "forsearch");
 
-if(argc < 5 || !strcmp(argv[4], "forsearch"))
-    search_arrays(arrays, array_count, retry_count, values, &linsearch_unroll, "linsearch_unroll");
+    if ((argc < 5) || !strcmp(argv[4], "forsearch"))
+        search_arrays(arrays, array_count, retry_count, values, &linsearch_unroll, "linsearch_unroll");
 
-if(argc < 5 || !strcmp(argv[4], "forsearch"))
-    search_arrays(arrays, array_count, retry_count, values, &dichsearch, "dichsearch");
+    if ((argc < 5) || !strcmp(argv[4], "forsearch"))
+        search_arrays(arrays, array_count, retry_count, values, &dichsearch, "dichsearch");
 
-if(argc < 5 || !strcmp(argv[4], "forsearch"))
-    search_arrays(arrays, array_count, retry_count, values, &linsearch, "linsearch");
+    if ((argc < 5) || !strcmp(argv[4], "forsearch"))
+        search_arrays(arrays, array_count, retry_count, values, &linsearch, "linsearch");
 
     free(arrays);
     free(values);
 
     return 0;
-}
+} /* main */
