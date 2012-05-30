@@ -3,7 +3,8 @@ OPTIMIZE:=-O3
 CC:=gcc
 CXX:=g++
 
-all: build/glib_hash_table build/stl_unordered_map build/stl_map build/boost_unordered_map build/google_sparse_hash_map build/google_dense_hash_map build/qt_qhash build/python_dict build/glib_hash_table_lite build/bplus_tree build/glib_tree build/bplus_tree_dicho build/bplus_tree2 build/bplus_tree2_linear build/bplus_tree_generic build/bplus_tree_generic_linear build/stx_bplus_tree
+all: build/glib_hash_table build/stl_unordered_map build/stl_map build/boost_unordered_map build/google_sparse_hash_map build/google_dense_hash_map build/qt_qhash build/python_dict build/glib_hash_table_lite build/bplus_tree build/glib_tree build/bplus_tree_dicho build/bplus_tree2 build/bplus_tree2_linear build/bplus_tree_generic build/bplus_tree_generic_linear build/bptree
+# build/stx_bplus_tree 
 
 build/glib_hash_table: src/glib_hash_table.c Makefile src/template.c
 	$(CC)  -DG_DISABLE_CHECKS -DG_DISABLE_ASSERT -D_NDEBUG $(OPTIMIZE) $(LINK) -lm `pkg-config --cflags --libs glib-2.0` src/glib_hash_table.c -o build/glib_hash_table
@@ -86,3 +87,6 @@ build/bplus_tree_generic: src/bplus_tree2.* bplus_tree/src/*.[ch] bplus_tree/inc
 
 build/bplus_tree_generic_linear: src/bplus_tree2.* bplus_tree/src/*.[ch] bplus_tree/include/*.h Makefile src/template.c
 	$(CC) -std=gnu99 -DG_DISABLE_CHECKS -DG_DISABLE_ASSERT -D_NDEBUG -DBPLUS_TREE_LINEAR_SEARCH -DBPLUS_TREE_GENERIC $(OPTIMIZE) $(LINK) -lm `pkg-config --cflags --libs glib-2.0` src/bplus_tree2.c -o build/bplus_tree_generic_linear -Ibplus_tree/src -Ibplus_tree/include
+
+build/bptree: src/bptree.* Makefile src/template.c
+	$(CC) -std=gnu99 $(OPTIMIZE) $(LINK) -lm src/bptree.c -o build/bptree

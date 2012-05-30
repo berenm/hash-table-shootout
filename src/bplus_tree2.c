@@ -3,7 +3,7 @@
 
 static gint intcmp(gconstpointer a,
                    gconstpointer b) {
-  return (a < b) ? (-1) : ((a > b) ? 1 : 0);
+  return a - b;
 }
 
 static gint gstrcmp(gconstpointer a,

@@ -70,6 +70,7 @@ proper_names = {
     'bplus_tree2_linear': 'Tree v2 (linear)',
     'bplus_tree_generic': 'Tree v2 (generic dichotomic)',
     'bplus_tree_generic_linear': 'Tree v2 (generic linear)',
+    'bptree': 'Jan Jannink B+Tree',
 }
 
 # do them in the desired order to make the legend not overlap the chart data
@@ -101,6 +102,7 @@ program_slugs = [
     'bplus_tree2_linear',
     'bplus_tree_generic',
     'bplus_tree_generic_linear',
+    # 'bptree',
 ]
 
 chart_data = {}

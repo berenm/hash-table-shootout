@@ -3,7 +3,9 @@ import sys, os, subprocess, signal
 programs = [
     'glib_hash_table',
     'google_dense_hash_map',
-    'stx_bplus_tree',
+    # 'stx_bplus_tree',
+    # 'bptree',
+    'bplus_tree_32',
     'bplus_tree2',
     'bplus_tree_generic',
     # 'stl_unordered_map',
@@ -28,7 +30,7 @@ programs = [
 ]
 
 minkeys  =  64*1024
-maxkeys  =   1*1024*1024
+maxkeys  =   4*1024*1024
 interval =  2
 best_out_of = 3
 

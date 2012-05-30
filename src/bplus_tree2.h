@@ -1,1 +1,1 @@
-#include "../bplus_tree/src/bplus_tree.c"
+#include "../bplus_tree/test/bplus_tree_all.c"
