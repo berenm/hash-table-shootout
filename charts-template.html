@@ -34,16 +34,22 @@
 
             yaxis_runtime_settings = {
                 // tickSize: 0.005,
+                min: 0,
+                max: 2,
                 tickFormatter: function(num, obj) { return parseInt(num*100)/100 + ' sec.'; }
             };
 
             yaxis_runtime_per_settings = {
                 tickSize: 0.00000005,
+                min: 0,
+                max: 0.0000005,
                 tickFormatter: function(num, obj) { return parseInt(num*100000000000)/100 + ' nsec.'; }
             };
 
             yaxis_memory_settings = {
                 // tickSize: 1.0,
+                min: 0,
+                max: 150*1024*1024,
                 tickFormatter: function(num, obj) { return parseInt(num/1024/1024) + 'MiB'; }
             };
 
@@ -101,24 +107,27 @@
                 // $.plot($("#random-lookup-ratio"), chart_data['random-lookup-ratio'], ratio_settings);
 
                 $.plot($("#random-usage-runtime"),  chart_data['random-usage-runtime'],  runtime_settings);
-                $.plot($("#insert-runtime"),        chart_data['insert-runtime'],        runtime_settings);
-                $.plot($("#delete-runtime"),        chart_data['delete-runtime'],        runtime_settings);
-                $.plot($("#lookup-runtime"),        chart_data['lookup-runtime'],        runtime_settings);
                 $.plot($("#random-insert-runtime"), chart_data['random-insert-runtime'], runtime_settings);
                 $.plot($("#random-delete-runtime"), chart_data['random-delete-runtime'], runtime_settings);
                 $.plot($("#random-lookup-runtime"), chart_data['random-lookup-runtime'], runtime_settings);
 
                 $.plot($("#random-usage-runtime-per"),  chart_data['random-usage-runtime-per'],  runtime_per_settings);
-                $.plot($("#insert-runtime-per"),        chart_data['insert-runtime-per'],        runtime_per_settings);
-                $.plot($("#delete-runtime-per"),        chart_data['delete-runtime-per'],        runtime_per_settings);
-                $.plot($("#lookup-runtime-per"),        chart_data['lookup-runtime-per'],        runtime_per_settings);
                 $.plot($("#random-insert-runtime-per"), chart_data['random-insert-runtime-per'], runtime_per_settings);
                 $.plot($("#random-delete-runtime-per"), chart_data['random-delete-runtime-per'], runtime_per_settings);
                 $.plot($("#random-lookup-runtime-per"), chart_data['random-lookup-runtime-per'], runtime_per_settings);
 
                 $.plot($("#random-usage-memory"),  chart_data['random-usage-memory'],  memory_settings);
-                $.plot($("#insert-memory"),        chart_data['insert-memory'],        memory_settings);
                 $.plot($("#random-insert-memory"), chart_data['random-insert-memory'], memory_settings);
+
+                $.plot($("#insert-runtime"),        chart_data['insert-runtime'],        runtime_settings);
+                $.plot($("#delete-runtime"),        chart_data['delete-runtime'],        runtime_settings);
+                $.plot($("#lookup-runtime"),        chart_data['lookup-runtime'],        runtime_settings);
+
+                $.plot($("#insert-runtime-per"),        chart_data['insert-runtime-per'],        runtime_per_settings);
+                $.plot($("#delete-runtime-per"),        chart_data['delete-runtime-per'],        runtime_per_settings);
+                $.plot($("#lookup-runtime-per"),        chart_data['lookup-runtime-per'],        runtime_per_settings);
+
+                $.plot($("#insert-memory"),        chart_data['insert-memory'],        memory_settings);
             });
         </script>
 
@@ -161,58 +170,6 @@
     <div class='chart'>
         <h4>Random usage: memory</h4>
         <div class="chart" id="random-usage-memory"></div>
-        <div class="xaxis-title">number of entries in hash table</div>
-    </div>
-    <div style='clear: both;'/>
-
-    <div class='chart'>
-        <h4>Inserts: time</h4>
-        <div class="chart" id="insert-runtime"></div>
-        <div class="xaxis-title">number of entries in hash table</div>
-    </div>
-    <div class='chart'>
-        <h4>Inserts: time (per k)</h4>
-        <div class="chart" id="insert-runtime-per"></div>
-        <div class="xaxis-title">number of entries in hash table</div>
-    </div>
-<!--     <div class='chart'>
-        <h4>Inserts: ratio</h4>
-        <div class="chart" id="insert-ratio"></div>
-        <div class="xaxis-title">number of entries in hash table</div>
-    </div> -->
-    <div class='chart'>
-        <h4>Deletes: time</h4>
-        <div class="chart" id="delete-runtime"></div>
-        <div class="xaxis-title">number of entries in hash table</div>
-    </div>
-    <div class='chart'>
-        <h4>Deletes: time (per k)</h4>
-        <div class="chart" id="delete-runtime-per"></div>
-        <div class="xaxis-title">number of entries in hash table</div>
-    </div>
-<!--     <div class='chart'>
-        <h4>Deletes: ratio</h4>
-        <div class="chart" id="delete-ratio"></div>
-        <div class="xaxis-title">number of entries in hash table</div>
-    </div> -->
-    <div class='chart'>
-        <h4>Lookups: time</h4>
-        <div class="chart" id="lookup-runtime"></div>
-        <div class="xaxis-title">number of entries in hash table</div>
-    </div>
-    <div class='chart'>
-        <h4>Lookups: time (per k)</h4>
-        <div class="chart" id="lookup-runtime-per"></div>
-        <div class="xaxis-title">number of entries in hash table</div>
-    </div>
-<!--     <div class='chart'>
-        <h4>Lookups: ratio</h4>
-        <div class="chart" id="lookup-ratio"></div>
-        <div class="xaxis-title">number of entries in hash table</div>
-    </div> -->
-    <div class='chart'>
-        <h4>Inserts: memory</h4>
-        <div class="chart" id="insert-memory"></div>
         <div class="xaxis-title">number of entries in hash table</div>
     </div>
     <div style='clear: both;'/>
@@ -268,6 +225,43 @@
         <div class="xaxis-title">number of entries in hash table</div>
     </div>
     <div style='clear: both;'/>
+
+<!--     <div class='chart'>
+        <h4>Inserts: time</h4>
+        <div class="chart" id="insert-runtime"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Inserts: time (per k)</h4>
+        <div class="chart" id="insert-runtime-per"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Deletes: time</h4>
+        <div class="chart" id="delete-runtime"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Deletes: time (per k)</h4>
+        <div class="chart" id="delete-runtime-per"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Lookups: time</h4>
+        <div class="chart" id="lookup-runtime"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Lookups: time (per k)</h4>
+        <div class="chart" id="lookup-runtime-per"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div class='chart'>
+        <h4>Inserts: memory</h4>
+        <div class="chart" id="insert-memory"></div>
+        <div class="xaxis-title">number of entries in hash table</div>
+    </div>
+    <div style='clear: both;'/> -->
 
 </body>
 </html>

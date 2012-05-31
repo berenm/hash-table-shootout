@@ -41,12 +41,12 @@ best_out_of = 3
 
 # for the final run, use this:
 
-outfile = open('output', 'w')
+outfile = open('output-%s' % sys.argv[1], 'w')
 
-if len(sys.argv) > 1:
-    benchtypes = sys.argv[1:]
+if len(sys.argv) > 2:
+    benchtypes = sys.argv[2:]
 else:
-    benchtypes = ('random-usage', 'insert', 'delete', 'lookup', 'random-insert', 'random-delete', 'random-lookup')
+    benchtypes = ('random-usage', 'random-insert', 'random-delete', 'random-lookup') # , 'insert', 'delete', 'lookup'
 
 for benchtype in benchtypes:
     nkeys = minkeys
@@ -83,3 +83,5 @@ for benchtype in benchtypes:
                 print fastest_attempt_data
 
         nkeys *= interval
+
+print 'for file in output-*; do cat ${file} | python make_chart_data.py | python make_html.py ${file/output-/}; done'
