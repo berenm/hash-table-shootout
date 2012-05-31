@@ -39,7 +39,7 @@
 
             yaxis_runtime_per_settings = {
                 tickSize: 0.00000005,
-                tickFormatter: function(num, obj) { return num*1000000000 + ' nsec.'; }
+                tickFormatter: function(num, obj) { return parseInt(num*100000000000)/100 + ' nsec.'; }
             };
 
             yaxis_memory_settings = {
